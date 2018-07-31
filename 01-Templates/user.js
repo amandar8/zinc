@@ -35,6 +35,10 @@
     function renderTemplate(userTemplate, data) {
       let userList = document.getElementById('z-user-list');
 
+      console.log(data);
+
+      let regex = /{{\s(.*?)\s}}/gm;
+
       let dataMap = data.map(user => {
         const userData = {
           photo: user.picture.thumbnail,
@@ -50,7 +54,7 @@
 
       dataMap.forEach(user => {
         let userString = userTemplate.replace(regex, (match, captured) => {
-          return user(captured);
+          return user[captured];
 
         })
         userList.insertAdjacentHTML('afterend', userString);
@@ -70,7 +74,7 @@
     </li>`;
 
 
-renderTemplate(userTemplate, json.results));
+renderTemplate(userTemplate, json.results);
         })
       }
 
