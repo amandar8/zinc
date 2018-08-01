@@ -1,45 +1,40 @@
-
 'use strict';
 
 /* eslint-env browser */
 
 (() => {
 
-    function populateList(results) {
-        let userList = document.getElementById('z-user-list'); //grab element of z-user-list
-        console.log(results); // eslint-disable-line no-console
-        for (let i = 0; i<results.length; i++){ //loops through results
+  function renderTemplate(userTemplate, data) {
+    let userList = document.getElementById('z-user-list');
 
-            let user = document.createElement('li'); //creates li element
-            user.classList.add('user'); //creates class named user
+    console.log(data);
 
-            let userPhoto = document.createElement('img');
-            userPhoto.classList.add('user-photo');
-            userPhoto.setAttribute('src', results[i].picture.medium);
+    let regex = /{{\s*([\w.]+)\s*}}/gm;
 
-            let userName = document.createElement('div');
-            userName.classList.add("user-name");
-            userName.innerHTML = results[i].name.first + " " + results[i].name.last;
+    data.forEach(user =>
+      userList.insertAdjacentHTML('beforeend', userTemplate.replace(regex, (match, captured) =>
+        captured.split('.').reduce((acc, curr) =>
+          acc[curr], user)))
+    );
+  }
 
-            let userLocation = document.createElement('div');
-            userLocation.classList.add("user-location");
-            userLocation.innerHTML = results[i].location.city + " " + results[i].location.state;
-       
-            let userEmail = document.createElement('div');
-            userEmail.classList.add("user-email");
-            userEmail.innerHTML = results[i].email
+  function init() {
+    fetch('https://randomuser.me/api/?results=5')
+      .then(res => res.json())
+      .then(json => {
 
-            user.append(userPhoto, userName, userLocation, userEmail); //allows to add multiple elements to li
-            userList.append(user); //append user info to userList
-        }
-    }
+        let userTemplate = `
+      <li class="user">
+        <img class="user-photo" src="{{ picture.thumbnail }}" alt="Photo of {{ name.first }} {{ name.last }}">
+        <div class="user-name">{{ name.first }} {{ name.last }}</div>
+        <div class="user-location">{{ location.city }}, {{ location.state }}</div>
+        <div class="user-email">{{ email }}</div>
+      </li>`;
 
-    function init() {
-        fetch('https://randomuser.me/api/?results=5')
-            .then(res => res.json())
-            .then(json => populateList(json.results));
-    }
 
-    document.addEventListener('DOMContentLoaded', init);
+        renderTemplate(userTemplate, json.results);
+      })
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
 })();
-
