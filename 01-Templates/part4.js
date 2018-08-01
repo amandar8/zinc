@@ -11,7 +11,6 @@
 
     let regex = /{{\s*([\w.]+)\s*}}/gm;
 
-    // 
     data.forEach(user =>
       userList.insertAdjacentHTML('beforeend', userTemplate.replace(regex, (match, captured) =>
         captured.split('.').reduce((acc, curr) =>
@@ -38,5 +37,4 @@
   }
 
   document.addEventListener('DOMContentLoaded', init);
-
 })();

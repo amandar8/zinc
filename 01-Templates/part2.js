@@ -9,7 +9,7 @@
 
       console.log(data);
 
-      let regex = /{{\s*(\w+)\s*}}/gm;
+      let regex = /{{\s(.*?)\s}}/gm;
 
       let dataMap = data.map(user => ({
         
