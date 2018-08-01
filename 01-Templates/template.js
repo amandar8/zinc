@@ -10,23 +10,15 @@
       console.log(data);
 
       let regex = /{{\s(.*?)\s}}/gm;
+    
 
-      let dataMap = data.map(user => {
-        const userData = {
-          photo: user.picture.thumbnail,
-          firstName: user.name.first,
-          lastName: user.name.last,
-          city: user.location.city,
-          state: user.location.state,
-          email: user.email
-        };
-
-        return userData
-      })
-
-      dataMap.forEach(user => {
+      data.forEach(user => {
         let userString = userTemplate.replace(regex, (match, captured) => {
-          return user[captured];
+            let splitArr = captured.split('.');
+            while (splitArr.length > 0)
+
+            })
+            return capture[splitArr[0]][splitArr[1]];
 
         })
         userList.insertAdjacentHTML('afterend', userString);
@@ -39,11 +31,11 @@
         .then(json => {
 
       let userTemplate = `<li class="user">
-    <img class="user-photo" src="{{ photo }}" alt="Photo of {{ firstName }} {{ lastName }}">
-    <div class="user-name">{{ firstName }} {{ lastName }}</div>
-    <div class="user-location">{{ city }}, {{ state }}</div>
-    <div class="user-email">{{ email }}</div>
-    </li>`;
+      <img class="user-photo" src="{{ picture.thumbnail }}" alt="Photo of {{ name.first }} {{ name.last }}">
+      <div class="user-name">{{ name.first }} {{ name.last }}</div>
+      <div class="user-location">{{ location.city }}, {{ location.state }}</div>
+      <div class="user-email">{{ email }}</div>
+  </li>`;
 
 
 renderTemplate(userTemplate, json.results);
