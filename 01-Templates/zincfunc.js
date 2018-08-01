@@ -10,15 +10,14 @@
     console.log(results); // eslint-disable-line no-console
     for (let i = 0; i<results.length; i++){ //loops through results
 
-    let user = document.createElement('li'); //creates li element
-    user.classList.add('user'); //creates class named user
-
-    user.innerHTML = `<img class="user-photo" src="${results[i].picture.medium}" alt="">
-    <div class="user-name">${results[i].name.first} ${results[i].name.last}</div>
-    <div class="user-location">${results[i].location.city}, ${results[i].location.state}</div>
-    <div class="user-email">${results[i].email}</div>`;
-
-    userList.appendChild(user);
+    userList.insertAdjacentHTML('beforeend', `
+    <li class="user">
+      <img class="user-photo" src="${results[i].picture.medium}" alt="">
+      <div class="user-name">${results[i].name.first} ${results[i].name.last}</div>
+      <div class="user-location">${results[i].location.city}, ${results[i].location.state}</div>
+      <div class="user-email">${results[i].email}</div>
+    </li>`);
+  
         }
     }
 

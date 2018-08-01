@@ -6,11 +6,12 @@
 (() => {
 
     function populateList(results) {
-        let userList = document.getElementById('z-user-list')
+        let userList = document.getElementById('z-user-list'); //grab element of z-user-list
         console.log(results); // eslint-disable-line no-console
-        for (let i = 0; i<results.length; i++){
-            let user = document.createElement('li');
-            user.classList.add('user');
+        for (let i = 0; i<results.length; i++){ //loops through results
+
+            let user = document.createElement('li'); //creates li element
+            user.classList.add('user'); //creates class named user
 
             let userPhoto = document.createElement('img');
             userPhoto.classList.add('user-photo');
@@ -28,8 +29,8 @@
             userEmail.classList.add("user-email");
             userEmail.innerHTML = results[i].email
 
-            user.append(userPhoto, userName, userLocation, userEmail);
-            userList.append(user);
+            user.append(userPhoto, userName, userLocation, userEmail); //allows to add multiple elements to li
+            userList.append(user); //append user info to userList
         }
     }
 
