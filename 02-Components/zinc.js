@@ -26,6 +26,11 @@ const Zinc = {};
         }
     }
 
+    function renderComponents(components){
+        console.log(components);
+    
+    }
+
     Zinc.registerComponent = function(elementName, templateFile, dataObject) {
         if (!Zinc.components) {
             Zinc.components = {};
@@ -34,12 +39,13 @@ const Zinc = {};
         Zinc.components[elementName] = {
             elementName,
             templateFile,
-            data
+            dataObject
         }
     }
 
     function init() {
-        renderComponent('user-item', 'user', Zinc.userData);
+        Zinc.registerComponent('user-item', 'user', Zinc.userData);
+        renderComponents(Zinc.components);
     }
 
     document.addEventListener('DOMContentLoaded', init);
