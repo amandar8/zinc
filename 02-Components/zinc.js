@@ -8,17 +8,34 @@ const Zinc = {};
     function renderComponent(element, content, data) {
         console.log(element, content, data); // eslint-disable-line no-console
 
-        fetch(`user.html`)
-            .then(template => template.text())
-            .then((template) => {
-                let regex = /{{\s*([\w.]+)\s*}}/g;
+        let regex = /{{\s*([\w.]+)\s*}}/g;
+        let arr = [data];
 
-                let user = template.replace(regex, (match, captured) => {
-                    let arr = captured.split('.');
-                    return arr.reduce((acc, curr) => acc[curr], data);
-                })
-                document.getElementsByTagName('user-item')[0].insertAdjacentHTML('afterbegin', user);
-            });
+        for (let i = 0; i < arr.length; i++) {
+            let parent = document.getElementsByTagName(element)[i];
+            fetch(`${content}.html`)
+                .then(html => html.text())
+                .then((template) => {
+
+                    arr.forEach(user =>
+                        parent.insertAdjacentHTML('beforeend', template.replace(regex, (match, captured) =>
+                            captured.split('.').reduce((acc, curr) =>
+                                acc[curr], user))));
+                });
+
+        }
+    }
+
+    Zinc.registerComponent = function(elementName, templateFile, dataObject) {
+        if (!Zinc.components) {
+            Zinc.components = {};
+        }
+
+        Zinc.components[elementName] = {
+            elementName,
+            templateFile,
+            data
+        }
     }
 
     function init() {

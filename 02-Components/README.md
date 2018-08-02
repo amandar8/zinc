@@ -66,7 +66,7 @@ Here's a relatively easy win for you. As of now, we're potentially passing four 
 
     Zinc.registerComponent({
         name: 'user-item',
-        templateFile: 'user',
+        templateFile: 'user',git
         data: userDataObject,
         controller: userController,
         // ... and so on
