@@ -18,5 +18,6 @@
         email: 'jack.burton@example.com'
     };
 
+    Zinc.userData = userData;
 
 })();
