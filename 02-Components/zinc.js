@@ -26,12 +26,17 @@ const Zinc = {};
         }
     }
 
-    function renderComponents(components){
-        console.log(components);
-    
+    function renderComponents(components) {
+        for (let component in components) {
+            renderComponent(
+                components[component].elementName,
+                components[component].templateFile,
+                components[component].dataObject)
+            console.log(components);
+        }
     }
 
-    Zinc.registerComponent = function(elementName, templateFile, dataObject) {
+    Zinc.registerComponent = function (elementName, templateFile, dataObject) {
         if (!Zinc.components) {
             Zinc.components = {};
         }
@@ -47,6 +52,7 @@ const Zinc = {};
         Zinc.registerComponent('user-item', 'user', Zinc.userData);
         renderComponents(Zinc.components);
     }
+
 
     document.addEventListener('DOMContentLoaded', init);
 })();
