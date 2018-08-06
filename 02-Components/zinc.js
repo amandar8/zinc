@@ -89,6 +89,14 @@ const Zinc = {};
                         data: user,
                         controller: hilight
                     });
+
+                    Zinc.registerComponent({
+                        name: 'user-info',
+                        templateFile: 'user',
+                        data: user,
+                        controller: hilight
+                    });
+
                     renderComponents(Zinc.components);
 
                 })
