@@ -78,10 +78,13 @@ Everything else should work the same—you're just simplifying the way you call 
 ## 5) Nested Components
 That looks like it works, but we've got one more step to make these components really useful to us. When we're using components to break down the structure and functionality for a web-based app, we're usually going to wind up wanting to use components inside our components, so we need to figure out how to make them work if we nest them. So, if we do something like:
 
-```js
+```html
     <user-list></user-list>
-and in the template for user-list, we have something like:
+```
 
+and in the template for `user-list`, we have something like:
+
+```html
     <ul class="user-list" id="z-user-list">
         <user-info></user-info>
         <user-info></user-info>
@@ -89,9 +92,9 @@ and in the template for user-list, we have something like:
     </ul>
 ```
 
-and then the user-info template has:
+and then the `user-info` template has:
 
-```js
+```html
     <li class="user">
         <img class="user-photo" src="{{picture.thumbnail}}" alt="Photo of {{name.first}} {{name.last}}">
         <div class="user-name">{{name.first}} {{name.last}}</div>
