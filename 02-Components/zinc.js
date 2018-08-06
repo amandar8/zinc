@@ -5,7 +5,28 @@
 const Zinc = {};
 
 (() => {
-    function renderComponent(element, content, data) {
+
+    function hilight() {
+        console.log(this);
+        this.firstElementChild.classList.toggle('hilight');
+    }
+
+    Zinc.registerComponent = function (configObj) {
+        if (!Zinc.components) {
+            Zinc.components = {};
+        }
+
+        Zinc.components[configObj.name] = {
+            name: configObj.name,
+            templateFile: configObj.templateFile,
+            data: configObj.data,
+            controller: configObj.controller
+        };
+    }
+
+    // element.addEventListener('click', function(e){
+
+    function renderComponent(element, content, data, controller) {
         let elements = Array.from(document.getElementsByTagName(element));
         let regex = /{{\s*([\w.]+)\s*}}/g;
         fetch(`${content}.html`)
@@ -16,6 +37,8 @@ const Zinc = {};
                         let arr = capture.split('.');
                         return arr.reduce((acc, curr) => acc[curr], data);
                     })
+                    // console.log(element.children);
+                    element.addEventListener('click', controller);
                     element.insertAdjacentHTML('beforeend', html);
                 })
             })
@@ -24,40 +47,37 @@ const Zinc = {};
     function renderComponents(components) {
         for (let component in components) {
             renderComponent(
-                components[component].elementName,
+                components[component].name,
                 components[component].templateFile,
-                components[component].dataObject)
+                components[component].data,
+                components[component].controller)
         }
     }
 
-    Zinc.registerComponent = function (elementName, templateFile, dataObject) {
-        if (!Zinc.components) {
-            Zinc.components = {};
-        }
 
-        Zinc.components[elementName] = {
-            elementName,
-            templateFile,
-            dataObject
-        }
-    }
 
     function init() {
-        Zinc.registerComponent('user-item', 'user', Zinc.userData);
-        renderComponents(Zinc.components);
+        // Zinc.registerComponent('user-item', 'user', Zinc.userData, controller);
+        // renderComponents(Zinc.components);
 
-        fetch('https://randomuser.me/api/?results=5')
+        fetch('https://randomuser.me/api/?results=1')
             .then(res => res.json())
-            .then(data =>{
-                console.log(data.results);
+            .then(data => {
+                // console.log(data.results);
                 data.results.forEach(user => {
-                    Zinc.registerComponent('user-item', 'user', user);
+
+
+                    Zinc.registerComponent({
+                        name: 'user-item',
+                        templateFile: 'user',
+                        data: user,
+                        controller: hilight
+                    });
                     renderComponents(Zinc.components);
+
                 })
-                })
-            }
-
-
-
+            })
+    }
     document.addEventListener('DOMContentLoaded', init);
-})();
+
+})()
