@@ -8,7 +8,7 @@ const Zinc = {};
 
     function hilight() {
         console.log(this);
-        this.firstElementChild.classList.toggle('hilight');
+        this.classList.toggle('hilight');
     }
 
     Zinc.registerComponent = function (configObj) {
@@ -29,17 +29,35 @@ const Zinc = {};
     function renderComponent(element, content, data, controller) {
         let elements = Array.from(document.getElementsByTagName(element));
         let regex = /{{\s*([\w.]+)\s*}}/g;
+
         fetch(`${content}.html`)
             .then(content => content.text())
             .then((content) => {
+
                 elements.forEach(element => {
+
                     let html = content.replace(regex, (match, capture) => {
                         let arr = capture.split('.');
                         return arr.reduce((acc, curr) => acc[curr], data);
                     })
                     // console.log(element.children);
                     element.addEventListener('click', controller);
-                    element.insertAdjacentHTML('beforeend', html);
+                    // element.insertAdjacentHTML('beforeend', html);
+
+                    let children = Array.from(element.firstElementChild.children);
+
+                    children.forEach(child => {
+                        child.insertAdjacentHTML('beforeend', html);
+                        child.addEventListener('click', controller);
+
+                        let grandchildren = Array.from(child.children);
+
+                        grandchildren.forEach(grandchild => {
+                            grandchild.addEventListener('click', controller);
+                        })
+
+
+                    })
                 })
             })
     }
@@ -54,13 +72,11 @@ const Zinc = {};
         }
     }
 
-
-
     function init() {
         // Zinc.registerComponent('user-item', 'user', Zinc.userData, controller);
         // renderComponents(Zinc.components);
 
-        fetch('https://randomuser.me/api/?results=1')
+        fetch('https://randomuser.me/api/?results=5')
             .then(res => res.json())
             .then(data => {
                 // console.log(data.results);
@@ -68,7 +84,7 @@ const Zinc = {};
 
 
                     Zinc.registerComponent({
-                        name: 'user-item',
+                        name: 'user-list',
                         templateFile: 'user',
                         data: user,
                         controller: hilight
