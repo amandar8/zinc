@@ -75,7 +75,7 @@ Here's a relatively easy win for you. As of now, we're potentially passing four 
 
 Everything else should work the same—you're just simplifying the way you call the registration function, and setting it up to be more easily extended in the future.
 
-##5) Nested Components
+## 5) Nested Components
 That looks like it works, but we've got one more step to make these components really useful to us. When we're using components to break down the structure and functionality for a web-based app, we're usually going to wind up wanting to use components inside our components, so we need to figure out how to make them work if we nest them. So, if we do something like:
 
 ```js
@@ -87,14 +87,17 @@ and in the template for user-list, we have something like:
         <user-info></user-info>
         <user-info></user-info>
     </ul>
+```
+
 and then the user-info template has:
 
+```js
     <li class="user">
         <img class="user-photo" src="{{picture.thumbnail}}" alt="Photo of {{name.first}} {{name.last}}">
         <div class="user-name">{{name.first}} {{name.last}}</div>
         <div class="user-location">{{location.city}}, {{location.state}}</div>
         <div class="user-email">{{email}}</div>
     </li>
-    ```
-    
+```
+
 We want to render out the list template first, then render each user info item inside the list from that template after we render it out. So, now we need to rewrite our rendering functions to keep drilling down and rendering everything inside them until we don't have any registered components left to render. Give it a shot!
